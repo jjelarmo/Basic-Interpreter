@@ -14,9 +14,27 @@ TT_RPAREN = 'RPAREN'
 
 DIGITS = '0123456789'
 
+class Position(object):
+
+    def __init__(self, idx, ln, col):
+        self.idx = idx
+        self.ln = ln
+        self.col = col
+
+    def advance(self, current_char):
+        self.idx +=1
+        self.col +=1
+
+        if current_char== '\n':
+            self.ln+=1
+            self.col=0
+            
+    def copy(self):
+        return Position(self.idx, self.ln, self.col)
+      
 class Token(object):
 
-    def __init__(self, type_, value):
+    def __init__(self, type_, value=None):
         self.type = type_
         self.value = value
 
@@ -28,13 +46,13 @@ class Lexer(object):
 
     def __init__(self, text):
         self.text = text
-        self.pos = -1
+        self.pos = Position(-1,0,-1)
         self.current_char = None
         self.advance()
 
     def advance(self):
-        self.pos +=1
-        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
+        self.pos.advance(self.current_char)
+        self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
 
     def make_tokens(self):
         tokens=[]
@@ -75,7 +93,7 @@ class Lexer(object):
                 num_str+=self.current_char
                 self.advance()
 
-        if dot_count=0:
+        if dot_count==0:
             return Token(TT_INT, int(num_str))
         else:
             return Token(TT_FLOAT, float(num_str))
