@@ -74,7 +74,7 @@ class Lexer(object):
                 self.advance()
             elif self.current_char in DIGITS +'.':
                 tokens.append(self.make_number())
-                self.advance()          
+                #self.advance()          
         return tokens
 
     def make_number(self):
