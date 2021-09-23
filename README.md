@@ -1,4 +1,4 @@
-# BASIC-Interpreter
+# BASIC-Lexer&Parser
 Implementation of BASIC interpreter using Python
 
 Compenents:
